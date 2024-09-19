@@ -11,6 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', ['launch/follow_wall.launch.py']),
+        ('share/' + package_name + '/launch', ['launch/simple_navigation.launch.py']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -21,7 +22,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'follow_wall = pacote_serio.follow_wall:main'
+            'follow_wall = pacote_serio.follow_wall:main',
+            'simple_navigation = pacote_serio.simple_navigation:main'
         ],
     },
 )
