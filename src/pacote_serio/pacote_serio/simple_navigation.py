@@ -91,29 +91,34 @@ class SimpleNavigation(Node):
     def turn_around(self, cmd):
         self.get_logger().info('Orientando')
 
-        if abs(self.theta) >= 0.1: 
+        if abs(self.theta) >= 0.6: 
             cmd.angular.z = 0.5
+            self.pub_cmd_vel.publish(cmd)
+            self.get_logger().info('Tentando girar')
+
+
 
         else:
             cmd.angular.z = 0.0
+            self.pub_cmd_vel.publish(cmd)
             self.get_logger().info(f'Orientado para {OBJECTIVE}')
             self.turn = False
             self.forward = True
 
-        self.pub_cmd_vel.publish(cmd)
-
+        
     def run(self):
         rate = self.create_rate(10)  
         self.get_logger().info('Iniciando')
         rclpy.spin_once(self)
         
         while True:
-
             
-
-            _ , _ , yaw = tf_transformations.euler_from_quaternion(
-                [self.pose.orientation.x, self.pose.orientation.y,
-                self.pose.orientation.z, self.pose.orientation.w])
+            try:
+                _ , _ , yaw = tf_transformations.euler_from_quaternion(
+                    [self.pose.orientation.x, self.pose.orientation.y,
+                    self.pose.orientation.z, self.pose.orientation.w])
+            except:
+                continue
 
             self.calculate_distance(OBJECTIVE)
             self.theta = self.orientation - yaw
