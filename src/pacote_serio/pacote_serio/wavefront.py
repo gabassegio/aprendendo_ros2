@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 
 INICIO = [56, 56]
 OBJETIVO =[384 , 264]  
-DIRECTIONS = [(-1, -1), (-1, 1), (1, -1), (1, 1),  # Diagonals
+DIRECTIONS = [(-1, -1), (-1, 1), (1, -1), (1, 1),  
     (-1, 0), (1, 0), (0, -1), (0, 1)]
 MAPA = open('/home/bibo/aprendendo_ros2/src/mapola.pgm', 'rb')
 
@@ -53,16 +53,16 @@ class Wavefront:
                 if neighbor[0] < len(matrix) and neighbor[1] < len(matrix[0]): #Dentro da matriz 
                     neighbor_val = matrix[neighbor[0]][neighbor[1]]
                     #print(f'Current: {neighbor_val}, best:{best_now} ')
+                    if neighbor_val == 2:
+                        path.append(neighbor)
+                        current = neighbor
+                        return path
+
                     if neighbor_val < best_now and neighbor_val != 0:
                         best_now = neighbor_val
                         current = neighbor
                         path.append(current)
-                    if neighbor_val == 2:
-                        path.append(neighbor)
-                        current = neighbor
-                        #print("Path:", path)
-
-                        return path
+                    
         
 
     def run(self):
