@@ -2,10 +2,10 @@ from matplotlib import pyplot as plt
 import math 
 import time
 
-INICIO =(56,56)# [56, 56]
-OBJETIVO =(384,264) # [384 , 264]  
+INICIO =(56,56)
+OBJETIVO =(200,264)   
 
-DIRECTIONS = [(-1, -1), (-1, 1), (1, -1), (1, 1),  # Diagonals
+DIRECTIONS = [(-1, -1), (-1, 1), (1, -1), (1, 1),  
     (-1, 0), (1, 0), (0, -1), (0, 1)]
 
 DIAGONALS = [(-1,0), (1,0), (0,1), (0,-1)]
@@ -31,7 +31,6 @@ class Astar:
             for point in path:
                 plt.plot(point[0], point[1], 'bo')  
         plt.imshow(matrix, interpolation='nearest', cmap='viridis')
-        plt.colorbar()
 
 
     # CÁLCULOS E FUNÇÔES 
@@ -85,15 +84,15 @@ class Astar:
             if 0 <= neighbor[0] < len(self.mapa) and 0 <= neighbor[1] < len(self.mapa[0]):
                 if self.mapa[neighbor[0]][neighbor[1]] != 0:
                     
-                    if neighbor in self.path:
+                    if (neighbor in self.path) or (neighbor in self.f) :
                         continue
 
                     f = self.funcao_avaliativa(cell,neighbor)
-                    print(f'Checking {neighbor} with f {f}')
+                    #print(f'Checking {neighbor} with f {f}')
                     if f == best_cost:
                         neighbor_h = self.heuristica(neighbor)
                         current_best_h = self.heuristica(next_cell)
-                        print(f'COMPARING H VALUES: {neighbor}: {neighbor_h}, {next_cell}:{current_best_h}')
+                        #print(f'COMPARING H VALUES: {neighbor}: {neighbor_h}, {next_cell}:{current_best_h}')
                         if(neighbor_h<current_best_h):
                             best_cost = f
                             next_cell = neighbor
@@ -103,7 +102,7 @@ class Astar:
                         next_cell = neighbor
 
         
-        print(f'Heading to {next_cell} with f {best_cost}\n\n')
+        #print(f'Heading to {next_cell} with f {best_cost}\n\n')
         return next_cell
 
 
@@ -120,7 +119,6 @@ class Astar:
             next_cell = self.search(current)
             previous = current
             current = next_cell
-            #time.sleep(0.5)
             if next_cell == previous:
                 print('SOU BURRO')
                 break
